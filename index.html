@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="index.css">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <title>Home</title>
+</head>
+
+<body>
+    <header>
+        <nav>
+            <h1>deteksiPhising</h1>
+        </nav>
+    </header>
+    <main>
+        <h1>Deteksi URL Phishing Secara Instan</h1>
+        <p>Masukan URL mencurigarakan dan dapatkan analisis secara cepat apakah <br> situs tersebut aman atau tidak.</p>
+        <form id="urlForm">
+            <input type="text" id="urlInput" name="url" placeholder="Masukan URL di sini">
+            <button type="submit">Cek</button>
+        </form>
+        <div class="results mb-5">
+            <h2>Hasil Analisis</h2>
+            <p id="result"></p>
+            <div class="progress mb-3 mt-3" style="height: 30px;">
+                <div class="progress-bar bg-danger" id="phishing-bar" role="progressbar"></div>
+                <div class="progress-bar bg-success" id="safe-bar" role="progressbar"></div>
+            </div>
+            <div class="card mb-3">
+                <div class="card-header text-center" id="card-header">-
+                </div>
+            </div>
+            <div class="fitur">
+                <h3>Analisis Fitur URL</h3>
+                <div class="result-fitur">
+                    <div class="row gx-3 mb-3">
+                        <div class="col-6">
+                            <div class="fitur-item">
+                                <span class="label">Entropi URL</span>
+                                <span class="value" id="entropy-value">-</span>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="fitur-item">
+                                <span class="label">Karakter Non-Alfanumerik</span>
+                                <span class="value" id="nonalpha-value">-</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row gx-3 mb-3">
+                        <div class="col-6">
+                            <div class="fitur-item">
+                                <span class="label">Ekstensi Mencurigakan</span>
+                                <span class="value" id="extension-value">-</span>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="fitur-item">
+                                <span class="label">Kata Kunci Sensitif</span>
+                                <span class="value" id="keywords-value">-</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row gx-3 mb-3">
+                        <div class="col-6">
+                            <div class="fitur-item">
+                                <span class="label">Pola Mencurigakan</span>
+                                <span class="value" id="pattern-value">-</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <footer>
+            <p>&copy; 2025 deteksiPhishing. All rights reserved.</p>
+        </footer>
+    </main>
+
+    <script src="js/bootstrap.bundle.min.js"></script>
+    <script>
+        const form = document.getElementById('urlForm');
+        const resultEl = document.getElementById('result');
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            await checkURL();
+        });
+
+        async function checkURL() {
+            const url = document.getElementById('urlInput').value.trim();
+            console.log('URL yang akan dicek:', url);
+
+            if (!url) {
+                alert('Silakan masukkan URL terlebih dahulu.');
+                return;
+            }
+
+            try {
+                const response = await fetch('http://localhost:5000/api/check-url', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ url })
+                });
+
+                if (!response.ok) {
+                    console.error('Response error:', response.status);
+                    resultEl.innerText = 'Terjadi kesalahan saat pengecekan.';
+                    resultEl.classList.remove('result-safe', 'result-phishing');
+                    return;
+                }
+
+                const data = await response.json();
+                console.log('Response dari server:', data);
+
+                let resultText = '';
+                if (data.whitelisted === true) {
+                    resultText = 'AMAN (Terdaftar dalam whitelist)';
+                    resultEl.classList.remove('result-phishing');
+                    resultEl.classList.add('result-safe');
+                } else {
+                    resultText = data.status === "phishing" ? "PHISHING" : "AMAN";
+                    resultEl.classList.remove('result-safe', 'result-phishing');
+                    resultEl.classList.add(data.status === "phishing" ? 'result-phishing' : 'result-safe');
+                }
+
+                resultEl.innerText = resultText;
+
+                const prob = Math.round((data.probability_phishing ?? 0) * 100);
+                const safeProb = 100 - prob;
+
+                // Update progress bar
+                document.getElementById('phishing-bar').style.width = `${prob}%`;
+                document.getElementById('phishing-bar').innerText = prob > 0 ? `${prob}%` : '';
+
+                document.getElementById('safe-bar').style.width = `${safeProb}%`;
+                document.getElementById('safe-bar').innerText = safeProb > 0 ? `${safeProb}%` : '';
+
+                // Update card header
+                document.getElementById('card-header').innerHTML =
+                    `Indikasi menunjukkan <strong>kemungkinan sebesar ${prob}%</strong> bahwa URL ini <br><strong>${resultText}</strong>`;
+
+                // Tampilkan fitur-fitur
+                const fitur = data.features ?? {};
+                document.getElementById('entropy-value').innerText = (fitur.entropy ?? '-') !== '-' ? fitur.entropy.toFixed(2) : '-';
+                document.getElementById('nonalpha-value').innerText = fitur.non_alphanum ?? '-';
+                document.getElementById('extension-value').innerText = fitur.suspicious_extension ? 'Ya' : 'Tidak';
+                document.getElementById('keywords-value').innerText = fitur.sensitive_keywords ? 'Ya' : 'Tidak';
+                document.getElementById('pattern-value').innerText = fitur.suspicious_patterns ? 'Ya' : 'Tidak';
+
+            } catch (error) {
+                console.error('Fetch error:', error);
+                resultEl.innerText = 'Gagal terhubung ke server.';
+                resultEl.classList.remove('result-safe', 'result-phishing');
+            }
+        }
+    </script>
+
+
+
+
+</body>
+
+</html>

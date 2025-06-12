@@ -1,0 +1,193 @@
+@import url("https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap");
+
+
+/* Start CSS Navbar */
+body {
+    margin: 0;
+    padding: 0;
+    background-color:rgb(255, 255, 255);
+}
+
+header nav h1 {
+    font-family: 'Lato', sans-serif;
+    font-weight: 700;
+    color:rgb(1, 230, 20);
+    margin: 0;
+    padding: 10px;
+}
+
+header {
+    background-color: #fff;
+    padding: 10px;
+    
+}
+
+/* End CSS Navbar */
+
+/* Start CSS Main */
+
+main {
+    padding: 20px;
+    background-color: rgb(19, 161, 30);
+    height: 500px;
+}
+
+main form {
+    padding-top: 50px;
+    padding-bottom: 50px;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+}
+
+main h1 {
+    font-family: 'Lato', sans-serif;
+    font-weight: 700;
+    color: #E5E7EB;
+    text-align: center;
+    margin-bottom: 0px;
+}
+
+main h2 {
+    font-family: 'Lato', sans-serif;
+    font-weight: 700;
+    font-size: 30px;
+    color:rgb(0, 0, 0);
+    text-align: center;
+    margin: 0px;
+    padding-bottom: 20px;
+}
+
+main p {
+    font-family: 'Lato', sans-serif;
+    font-weight: 400;
+    color: #E5E7EB;
+    text-align: center;
+    margin: 0px;
+}
+
+main .results {
+    background-color:rgb(255, 255, 255);
+    padding: 20px;
+    border-radius: 10px;
+    flex-direction: column;
+    font-family: 'Lato', sans-serif;
+    font-weight: 400;
+    color: #1F2937;
+    max-width: 700px;
+    margin: auto;
+    width: 700px;
+    box-shadow: 0 30px 30px rgb(144, 144, 144);
+}
+
+
+main .results .card p {
+    font-family: 'Lato', sans-serif;
+    font-weight: 400;
+    color: rgb(0, 0, 0);
+    padding: 10px;
+    border-radius: 10px;
+    justify-content: center;
+    background-color: transparent;
+}
+
+/* Tambahkan di file index.css atau dalam tag <style> di <head> */
+
+.result-phishing {
+    background-color: #ff4d4d;
+    color: white;
+    font-weight: bold;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.result-safe {
+    background-color: #4caf50;
+    color: white;
+    font-weight: bold;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+main form input {
+    font-family: 'Lato', sans-serif;
+    font-weight: 400;
+    color: #1F2937;
+    padding: 15px;
+    border: 1px solid #E5E7EB;
+    border-radius: 4px;
+    width: 500px;
+}
+
+main form button {
+    font-family: 'Lato', sans-serif;
+    font-weight: 700;
+    color: rgb(19, 161, 30);
+    background-color:rgb(255, 255, 255);
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-left: 10px;
+}
+
+main form button:hover {
+    background-color: rgb(69, 221, 64);
+    color: rgb(255, 255, 255);
+    animation: 0.3s;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+main .results .progress-stacked{
+    margin: 20px 0;
+}
+
+main .results .fitur h3 {
+    font-family: 'Lato', sans-serif;
+    font-weight: 700;
+    color: rgb(0, 0, 0);
+    margin-bottom: 10px;
+    text-align: center;
+    padding: 20px;
+}
+
+main .results .fitur .result-fitur h5 {
+    font-family: 'Lato', sans-serif;
+    font-size: 12px;
+    font-weight: 400;
+    color: rgb(0, 0, 0);
+    margin-bottom: 10px;
+    
+}
+
+main .results .fitur .result-fitur p {
+    font-family: 'Lato', sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+    color: rgb(0, 0, 0);
+    margin-bottom: 10px;
+    padding: 0px;
+    background-color: 
+}
+
+.fitur-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 18px;
+    background-color:rgb(240, 240, 240);
+    border-radius: 10px;
+}
+
+.fitur-item .label {
+    font-weight: 400;
+    color: #111827;
+}
+
+.fitur-item .value {
+    font-weight: 400;
+    color: #1f2937;
+}
+
+/* End CSS Main */
